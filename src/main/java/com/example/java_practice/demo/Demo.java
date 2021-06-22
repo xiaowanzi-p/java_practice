@@ -9,6 +9,10 @@ public class Demo {
         nodeDistance.printMatrix();
         nodeDistance.dynamicDistance(0);
         System.out.println(nodeDistance.getTargetDistance());
+        System.out.println(nodeDistance.getTargetRoute());
+        Integer distance = nodeDistance.dynamicDistance();
+        System.out.println(distance);
+        System.out.println(nodeDistance.getTargetRoute());
     }
 }
 

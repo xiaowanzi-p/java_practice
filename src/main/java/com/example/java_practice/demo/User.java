@@ -7,6 +7,15 @@ import lombok.Setter;
 @Setter
 public class User implements Comparable<User>{
     private Long id;
+    private String name = "张三";
+
+    public User() {
+
+    }
+
+    public User(String name) {
+        this.name = name;
+    }
 
     @Override
     public int compareTo(User o) {

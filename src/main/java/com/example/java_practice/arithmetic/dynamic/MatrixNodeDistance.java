@@ -1,12 +1,10 @@
 package com.example.java_practice.arithmetic.dynamic;
 
+import com.google.common.collect.Maps;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.util.CollectionUtils;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 
 /**
@@ -24,6 +22,8 @@ public class MatrixNodeDistance {
     private Map<Pair,Integer> currentMap = new HashMap<>();
     //目标节点
     private Pair<Integer,Integer> target = Pair.of(3,3);
+    //目标节点的路线
+    private List<Pair<Integer,Integer>> route = new ArrayList<>();
 
     public MatrixNodeDistance() {
         for (int i=0; i<4; i++) {
@@ -77,6 +77,14 @@ public class MatrixNodeDistance {
         }
     }
 
+    //动态规划矩阵距离-状态转移方程法
+    //min_distance(row,colum) = distance(row,colum) + min[min_distance(row-1,colum),min_distance(row,colum-1)]
+    public Integer dynamicDistance() {
+        route.clear();
+        Integer distance = minDistance(target);
+        return distance;
+    }
+
     //打印原始矩阵
     public void printMatrix() {
         for (int i=0; i<4; i++) {
@@ -95,6 +103,66 @@ public class MatrixNodeDistance {
         return dynamicTable[target.getLeft()][target.getRight()];
     }
 
+    //获取目标node
+    public String getTargetRoute() {
+        targetRoute(target);
+        int size = route.size();
+        StringBuilder builder = new StringBuilder();
+        for (int i=size-1; i>=0; i--) {
+            Pair<Integer, Integer> node = route.get(i);
+            int data = this.matrix[node.getLeft()][node.getRight()];
+            builder.append(data);
+            if (i != 0) {
+                builder.append("->");
+            }
+        }
+        return builder.toString();
+    }
+
+    private void targetRoute(Pair<Integer,Integer> target) {
+        //递归结束条件
+        if (target == null) {
+            return;
+        }
+
+        //加入节点
+        route.add(target);
+
+        Integer row = target.getLeft();
+        Integer colum = target.getRight();
+        //倒推向左移
+        int left = colum - 1;
+        Integer leftDistance = null;
+        if (left >= 0) {
+            leftDistance = dynamicTable[row][left];
+        }
+
+        //倒推向上移
+        int up = row - 1;
+        Integer upDistance = null;
+        if (up >= 0) {
+            upDistance = dynamicTable[up][colum];
+        }
+
+        //判断路径最小的节点加入
+        Pair<Integer,Integer> next = null;
+        if (leftDistance == null && upDistance != null) {
+            next=  Pair.of(up,colum);
+        }
+        if (leftDistance != null && upDistance == null) {
+            next =  Pair.of(row,left);
+        }
+        if (leftDistance != null && upDistance != null) {
+            if (leftDistance < upDistance) {
+                next =  Pair.of(row,left);
+            } else {
+                next =  Pair.of(up,colum);
+            }
+        }
+        //递归下一个节点
+        targetRoute(next);
+    }
+
     //只加入最短的距离
     private boolean addCurrent(Pair<Integer,Integer> key, Integer distance) {
         boolean flag = false;
@@ -108,7 +176,42 @@ public class MatrixNodeDistance {
         return flag;
     }
 
-    private void addNodeRoute(Pair<Integer,Integer> current, Pair<Integer,Integer> next) {
+    //递归的计算最短距离
+    private Integer minDistance(Pair<Integer,Integer> target) {
+        Integer row = target.getLeft();
+        Integer colum = target.getRight();
+        //递归结束条件
+        if (row < 0 || colum < 0) {
+            return null;
+        }
 
+        int distance = this.matrix[row][colum];
+        //左移
+        Integer leftDistance = minDistance(Pair.of(row,colum - 1));
+        //上移
+        Integer upDistance = minDistance(Pair.of(row - 1, colum));
+        //最短的距离
+        Integer min = min(leftDistance, upDistance);
+        //填充动态规划表
+        dynamicTable[row][colum] = distance + min;
+        return distance + min;
+    }
+
+    //计算得出最小的距离
+    private Integer min(Integer leftDistance, Integer upDistance) {
+        if (leftDistance == null && upDistance != null) {
+            return upDistance;
+        }
+        if (leftDistance != null && upDistance == null) {
+            return leftDistance;
+        }
+        if (leftDistance != null && upDistance != null) {
+            if (leftDistance < upDistance) {
+                return leftDistance;
+            } else {
+                return upDistance;
+            }
+        }
+        return 0;
     }
 }
