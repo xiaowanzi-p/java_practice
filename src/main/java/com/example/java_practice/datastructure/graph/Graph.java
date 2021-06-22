@@ -4,6 +4,7 @@ package com.example.java_practice.datastructure.graph;
 import com.google.common.collect.Lists;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 
@@ -32,12 +33,12 @@ public class Graph<T> {
 
        if (outDegreeData != null) {
           OriginNode<T> outOriginNode = new OriginNode(outDegreeData);
-          if (!map.containsKey(outOriginNode)) {
-              map.put(outOriginNode,Lists.newArrayList());
-          }
           DegreeNode<T> OutDegreeNode = new DegreeNode<>(outOriginNode, weight);
           map.get(originNode).add(OutDegreeNode);
           if (!isDirect) {
+              if (!map.containsKey(outOriginNode)) {
+                  map.put(outOriginNode,Lists.newArrayList());
+              }
               DegreeNode<T> inDegreeNode = new DegreeNode<>(originNode, weight);
               map.get(outOriginNode).add(inDegreeNode);
           }
@@ -52,6 +53,36 @@ public class Graph<T> {
         if (!isDirect) {
             map.get(outNode).remove(originNode);
         }
+    }
+
+    //获取图的入度列表
+    public Map<OriginNode<T>,List<DegreeNode>> inDegreeList() {
+        //获取所有节点
+        Set<OriginNode<T>> set = new HashSet<>();
+        Set<Map.Entry<OriginNode<T>, List<DegreeNode>>> entries = map.entrySet();
+        for (Map.Entry<OriginNode<T>, List<DegreeNode>> entry : entries) {
+            OriginNode<T> key = entry.getKey();
+            List<DegreeNode> value = entry.getValue();
+            set.add(key);
+            value.stream().forEach(it -> set.add(it.data));
+        }
+
+        Map<OriginNode<T>,List<DegreeNode>> degreeMap = new HashMap<>();
+        //入度列表
+        for (OriginNode<T> node : set) {
+            List<DegreeNode> list = new ArrayList<>();
+            for (Map.Entry<OriginNode<T>, List<DegreeNode>> entry : entries) {
+                OriginNode<T> key = entry.getKey();
+                List<DegreeNode> value = entry.getValue();
+                DegreeNode<T> degreeNode = new DegreeNode<>(node, 0);
+                if (value.contains(degreeNode)) {
+                    list.add(new DegreeNode(key,0));
+                }
+            }
+            degreeMap.put(node,list);
+        }
+
+        return degreeMap;
     }
 
 

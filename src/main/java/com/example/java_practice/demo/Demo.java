@@ -2,17 +2,14 @@ package com.example.java_practice.demo;
 
 
 import com.example.java_practice.arithmetic.dynamic.MatrixNodeDistance;
+import com.example.java_practice.arithmetic.kahn.Kahn;
 
 public class Demo {
     public static void main(String[] a) {
-        MatrixNodeDistance nodeDistance = new MatrixNodeDistance();
-        nodeDistance.printMatrix();
-        nodeDistance.dynamicDistance(0);
-        System.out.println(nodeDistance.getTargetDistance());
-        System.out.println(nodeDistance.getTargetRoute());
-        Integer distance = nodeDistance.dynamicDistance();
-        System.out.println(distance);
-        System.out.println(nodeDistance.getTargetRoute());
+        Kahn kahn = new Kahn();
+        kahn.initData();
+        String sort = kahn.sort();
+        System.out.println(sort);
     }
 }
 
