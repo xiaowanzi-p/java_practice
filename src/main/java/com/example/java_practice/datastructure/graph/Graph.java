@@ -16,6 +16,8 @@ public class Graph<T> {
     private Map<OriginNode<T>,List<DegreeNode>> map = new HashMap<>(50);
     //是否是有向图
     private boolean isDirect;
+    //首顶点
+    private OriginNode<T> head;
 
     public Graph(boolean isDirect) {
         this.isDirect = isDirect;
@@ -27,6 +29,9 @@ public class Graph<T> {
            return;
        }
        OriginNode<T> originNode = new OriginNode<>(originData);
+       if (map.isEmpty()) {
+           head = originNode;
+       }
        if (!map.containsKey(originNode)) {
            map.put(originNode,Lists.newArrayList());
        }
@@ -53,6 +58,40 @@ public class Graph<T> {
         if (!isDirect) {
             map.get(outNode).remove(originNode);
         }
+    }
+
+    //BFS广度优先搜索
+    public String bfs(T target) {
+        //待遍历节点集合
+        LinkedList<T> waitList = new LinkedList<>();
+        //记录已经遍历访问过的节点
+        Map<T, Object> visited = new HashMap<>();
+        //到目标节点的路径
+        Map<T, T> route = new HashMap<>();
+        //先找第一个顶点
+        waitList.add(head.data);
+        visited.put(head.data,1);
+        //遍历查找节点集合
+        while (!CollectionUtils.isEmpty(waitList)) {
+            T data = waitList.removeFirst();
+            OriginNode node = new OriginNode(data);
+            //查找下一个度的节点
+            List<DegreeNode> list = map.get(node);
+            if (!CollectionUtils.isEmpty(list)) {
+                list.stream().forEach(it -> {
+                    T t = (T) it.getData().data;
+                    if (visited.get(t) == null) {
+                        visited.put(t,1);
+                        waitList.add(t);
+                        route.put(t,data);
+                    }
+                });
+            }
+        }
+
+        //打印路径
+        String result = printBfs(target, route);
+        return result;
     }
 
     //获取图的入度列表
@@ -136,5 +175,27 @@ public class Graph<T> {
         public int hashCode() {
             return Objects.hash(data);
         }
+    }
+
+
+    private String printBfs(T target, Map<T, T> route) {
+        List<T> list = new ArrayList<>();
+        list.add(target);
+        T pre = route.get(target);
+        while (!pre.equals(head.data)) {
+            list.add(pre);
+            pre = route.get(pre);
+
+        }
+        list.add(pre);
+
+        StringBuilder builder = new StringBuilder();
+        for (int i=list.size()-1; i>=0; i--) {
+            builder.append(list.get(i));
+            if (i != 0) {
+                builder.append("->");
+            }
+        }
+        return builder.toString();
     }
 }
