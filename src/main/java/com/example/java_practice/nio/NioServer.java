@@ -73,6 +73,7 @@ public class NioServer {
     //注册客户端通道
     private void registerClient(SocketChannel clientChannel) throws IOException {
         //客户端通道也设置非阻塞
+        log.info("收到一个客户端连接");
         clientChannel.configureBlocking(false);
         clientChannel.register(clientSelector,SelectionKey.OP_READ);
     }
@@ -87,6 +88,7 @@ public class NioServer {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                log.info("收到一个客户端的写入");
                 Set<SelectionKey> selectionKeys = clientSelector.selectedKeys();
                 Iterator<SelectionKey> iterator = selectionKeys.iterator();
                 while (iterator.hasNext()) {
