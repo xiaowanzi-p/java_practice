@@ -25,7 +25,7 @@ public class NioServer {
     private Selector clientSelector;
     //客户端连接处理函数
     @Autowired
-    private ClientHandler handler;
+    private AbstractClientHandler handler;
 
     public synchronized void serverStart(int port) {
         try {
@@ -45,7 +45,7 @@ public class NioServer {
             serverSocket.bind(address);
             //通道注册选择器，服务端只能监听ACCEPT事件
             serverChannel.register(serverSelector, SelectionKey.OP_ACCEPT);
-            //启动客户端连接处理程序
+            //启动客户端处理程序
             startHandlerClient();
             log.info("服务端启动成功...");
             //主线程循环获取连接的客户端
@@ -76,29 +76,34 @@ public class NioServer {
         log.info("收到一个客户端连接");
         clientChannel.configureBlocking(false);
         clientChannel.register(clientSelector,SelectionKey.OP_READ);
+        //注册新连接需要唤醒之前的选择器,重新选择让新注册的连接生效
+        clientSelector.wakeup();
     }
 
     //处理客户端通道连接
     private void startHandlerClient() {
+        log.info("启动客户端处理程序...");
         ThreadPoolUtils.execute(() -> {
             while (true) {
                 //阻塞等待客户端连接可读
                 try {
-                    clientSelector.select();
+                    int select = clientSelector.select();
+                    if (select <= 0) {
+                        continue;
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                log.info("收到一个客户端的写入");
+
                 Set<SelectionKey> selectionKeys = clientSelector.selectedKeys();
                 Iterator<SelectionKey> iterator = selectionKeys.iterator();
                 while (iterator.hasNext()) {
                     SelectionKey selectionKey = iterator.next();
                     if (selectionKey.isReadable()) {
+                        log.info("收到一个客户端的写入");
                         SocketChannel socketChannel = (SocketChannel) selectionKey.channel();
-                        //多线程分发处理
-                        ThreadPoolUtils.execute(() -> {
-                            handler.apply(socketChannel);
-                        });
+                        //处理此请求
+                        handler.handler(socketChannel,selectionKey);
                     }
                     //移除Set集合中的key
                     iterator.remove();
