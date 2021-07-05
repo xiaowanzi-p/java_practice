@@ -12,8 +12,11 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @Slf4j
@@ -70,14 +73,20 @@ public class NioServer {
         }
     }
 
-    //注册客户端通道
-    private void registerClient(SocketChannel clientChannel) throws IOException {
-        //客户端通道也设置非阻塞
-        log.info("收到一个客户端连接");
-        clientChannel.configureBlocking(false);
-        clientChannel.register(clientSelector,SelectionKey.OP_READ);
-        //注册新连接需要唤醒之前的选择器,重新选择让新注册的连接生效
-        clientSelector.wakeup();
+    //注册客户端通道,多线程处理连接注册 Reactor模型
+    private void registerClient(SocketChannel clientChannel) {
+        ThreadPoolUtils.execute(() -> {
+            try {
+                //客户端通道也设置非阻塞
+                log.info("收到一个客户端连接");
+                clientChannel.configureBlocking(false);
+                clientChannel.register(clientSelector,SelectionKey.OP_READ);
+                //注册新连接需要唤醒之前的选择器,重新选择让新注册的连接生效
+                clientSelector.wakeup();
+            } catch (Exception e) {
+                log.error("注册新连接失败",e);
+            }
+        });
     }
 
     //处理客户端通道连接
@@ -95,18 +104,31 @@ public class NioServer {
                     e.printStackTrace();
                 }
 
+                //已经准备好可以读的客户端连接
                 Set<SelectionKey> selectionKeys = clientSelector.selectedKeys();
                 Iterator<SelectionKey> iterator = selectionKeys.iterator();
+                List<CompletableFuture> list = new ArrayList();
+
                 while (iterator.hasNext()) {
                     SelectionKey selectionKey = iterator.next();
                     if (selectionKey.isReadable()) {
                         log.info("收到一个客户端的写入");
                         SocketChannel socketChannel = (SocketChannel) selectionKey.channel();
-                        //处理此请求
-                        handler.handler(socketChannel,selectionKey);
+                        //多线程Reactor处理客户端连接
+                        CompletableFuture<Void> future = CompletableFuture.runAsync(() -> handler.handler(socketChannel, selectionKey), ThreadPoolUtils.getPoolExecutor());
+                        if (future != null) {
+                            list.add(future);
+                        }
                     }
-                    //移除Set集合中的key
-                    iterator.remove();
+                }
+
+                //等待这批准备好的客户端请求完毕在进行下一次选择
+                try {
+                    CompletableFuture.allOf(list.toArray(new CompletableFuture[0])).get();
+                    //清除Set<SelectionKey>集合
+                    selectionKeys.clear();
+                } catch (Exception e) {
+
                 }
             }
         });
