@@ -1,6 +1,7 @@
 package com.example.java_practice.demo;
 
 import com.example.java_practice.datastructure.graph.Graph;
+import com.example.java_practice.netty.NettyServer;
 import com.example.java_practice.nio.NormalNio;
 
 import java.io.FileInputStream;
@@ -13,7 +14,7 @@ import java.nio.channels.FileChannel;
 public class Demo {
 
     public static void main(String[] a) throws IOException {
-        NormalNio.copyFile("/Users/jackpeng-work/Documents/output","/Users/jackpeng-work/Documents/input");
+        NettyServer.serverStart(7629);
     }
 }
 
