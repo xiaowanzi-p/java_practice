@@ -63,6 +63,12 @@
             <version>5.0.0.Alpha2</version>
         </dependency>
 
+        <!--动态class-->
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>2.4.13</version>
+        </dependency>
     </dependencies>
 
     <build>
