@@ -1,5 +1,6 @@
 package com.example.java_practice.demo;
 
+import com.example.java_practice.classload.MyClassLoader;
 import com.alibaba.fastjson.JSONObject;
 import com.example.java_practice.datastructure.graph.Graph;
 import com.example.java_practice.netty.NettyServer;
@@ -23,14 +24,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.Arrays;
 
 public class Demo {
 
     public static void main(String[] a) throws Exception {
-        CompletableFuture future = new CompletableFuture();
-        future.complete("test");
-        Object o = future.get();
-        System.out.println(o);
+        MyClassLoader myClassLoader = new MyClassLoader("/Users/pengshaoxiang/Documents/");
+        Class<?> clazz = myClassLoader.findClass("DemoUser");
+        DemoUser demoUser = (DemoUser) clazz.newInstance();
+        String name = demoUser.getName();
+        System.out.println(name);
     }
 }
 
