@@ -1,5 +1,7 @@
 package com.example.java_practice.rpc.provider;
 
+import com.example.java_practice.rpc.nameservice.ServerUrl;
+
 public interface RpcProvider {
 
     /**

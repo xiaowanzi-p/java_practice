@@ -1,4 +1,4 @@
-package com.example.java_practice.rpc.provider;
+package com.example.java_practice.rpc.nameservice;
 
 import lombok.Getter;
 import lombok.Setter;

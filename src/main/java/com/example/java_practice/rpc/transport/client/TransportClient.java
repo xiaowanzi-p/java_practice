@@ -1,7 +1,9 @@
 package com.example.java_practice.rpc.transport.client;
 
-import com.example.java_practice.rpc.provider.ServerUrl;
+import com.alibaba.fastjson.JSONObject;
+import com.example.java_practice.rpc.nameservice.ServerUrl;
 import com.example.java_practice.rpc.stub.model.StubRequest;
+import com.example.java_practice.rpc.stub.model.StubResponse;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -16,26 +18,44 @@ import io.netty.handler.codec.string.StringEncoder;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 public class TransportClient {
 
+    //存储客户端连接
+    private Map<ServerUrl,Channel> serverMap = new HashMap<>(16);
+    //反转存储客户端连接
+    private Map<Channel,ServerUrl> revertServerMap = new HashMap<>(16);
+    //所有的在途请求
+    private Map<String, CompletableFuture<StubResponse>> requestMap = new HashMap<>(16);
 
-    private Map<ServerUrl,Channel> map = new HashMap<>(16);
-
-    public void sendMessage(StubRequest request) {
+    public CompletableFuture<StubResponse> sendMessage(StubRequest request) {
         ServerUrl server = request.getServerUrl();
-        //获取客户端连接
-        Channel channel = createClient(server);
+        CompletableFuture<StubResponse> future = new CompletableFuture<>();
+        try {
+            //获取客户端连接
+            Channel channel = createClient(server);
+            //发送请求
+            ChannelFuture channelFuture = channel.writeAndFlush(JSONObject.toJSONString(request));
+            channelFuture.addListener((futureListener) -> {
 
-
+            })
+            //存储请求待返回可以回调填充结果
+            requestMap.put(request.getRequestId(),future);
+        } catch (Exception e) {
+            log.error("TransportClient sendMessage error",e);
+            future.completeExceptionally(e);
+        }
+        return future;
     }
 
 
     private synchronized Channel createClient(ServerUrl server) {
         //先从缓存中获取
-        Channel channel = map.get(server);
+        Channel channel = serverMap.get(server);
         if (channel != null) {
             return channel;
         }
@@ -54,14 +74,14 @@ public class TransportClient {
                 public void initChannel(SocketChannel ch) throws Exception {
                     ch.pipeline().addLast(new StringDecoder());
                     ch.pipeline().addLast(new StringEncoder());
-                    ch.pipeline().addLast(new ClientHandler());
+                    ch.pipeline().addLast(new ClientHandler(requestMap,revertServerMap,serverMap));
                 }
             });
 
             // Start the client.
             ChannelFuture f = b.connect(host, port).sync(); // (5)
             Channel ch = f.channel();
-            map.put(server,ch);
+            serverMap.put(server,ch);
             return ch;
             // Wait until the connection is closed.
             //f.channel().closeFuture().sync();
