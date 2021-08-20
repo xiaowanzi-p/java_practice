@@ -9,13 +9,13 @@ import java.util.Objects;
 @Getter
 @Setter
 public class ServerUrl {
-    //服务名称,唯一的标识
+    //服务名称,唯一的标识com.test.Hello
     private String name;
     //主机
     private String host;
     //端口
     private Integer port;
-    //服务路径
+    //服务路径 com.test.Hello#demo
     private String path;
 
     @Override

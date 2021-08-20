@@ -41,8 +41,10 @@ public class TransportClient {
             //发送请求
             ChannelFuture channelFuture = channel.writeAndFlush(JSONObject.toJSONString(request));
             channelFuture.addListener((futureListener) -> {
-
-            })
+                if (!futureListener.isSuccess()) {
+                    future.completeExceptionally(new RuntimeException("TransportClient sendMessage error"));
+                }
+            });
             //存储请求待返回可以回调填充结果
             requestMap.put(request.getRequestId(),future);
         } catch (Exception e) {
