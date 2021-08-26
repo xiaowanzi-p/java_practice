@@ -26,7 +26,7 @@ public class ServerHandler extends ChannelHandlerAdapter {
             String[] split = path.split("#");
             String className = split[0];
             String methodName = split[1];
-            Object request = stubRequest.getRequest();
+            Object[] request = stubRequest.getRequest();
             //执行目标方法
             Object result = executeTargetMethod(className, methodName, request);
             //将结果返回
@@ -38,7 +38,7 @@ public class ServerHandler extends ChannelHandlerAdapter {
     }
 
 
-    private Object executeTargetMethod(String className, String methodName, Object request) throws InvocationTargetException, IllegalAccessException {
+    private Object executeTargetMethod(String className, String methodName, Object[] request) throws InvocationTargetException, IllegalAccessException {
         Class<?> clazz = SpringHelper.getBeanClass(className);
         Object bean = SpringHelper.getBean(className);
         Method[] methods = clazz.getMethods();

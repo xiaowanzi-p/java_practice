@@ -16,7 +16,7 @@ public class StubRequest {
 
     private ServerUrl serverUrl;
 
-    private Object request;
+    private Object[] request;
 
     @Override
     public boolean equals(Object o) {

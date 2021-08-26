@@ -10,7 +10,7 @@ public interface RpcProvider {
      * @param clazz
      * @param <T>
      */
-   <T> T getRemoteService(Class<T> clazz);
+   <T> T getRemoteService(Class<T> clazz) throws InstantiationException, IllegalAccessException;
 
 
     /**

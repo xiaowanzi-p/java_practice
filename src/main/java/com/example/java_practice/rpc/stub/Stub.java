@@ -3,25 +3,13 @@ package com.example.java_practice.rpc.stub;
 import com.example.java_practice.rpc.nameservice.ServerUrl;
 import com.example.java_practice.rpc.transport.client.TransportClient;
 
-public class Stub implements StubInter {
+public interface Stub {
 
-    private ServerUrl serverUrl;
-    private TransportClient transportClient;
+    ServerUrl getServerUrl();
 
-    public ServerUrl getServerUrl() {
-        return serverUrl;
-    }
+    void setServerUrl(ServerUrl serverUrl);
 
-    public void setServerUrl(ServerUrl serverUrl) {
-        this.serverUrl = serverUrl;
-    }
+    TransportClient getTransportClient();
 
-    public TransportClient getTransportClient() {
-        return transportClient;
-    }
-
-    public void setTransportClient(TransportClient transportClient) {
-        this.transportClient = transportClient;
-    }
-
+    void setTransportClient(TransportClient transportClient);
 }
