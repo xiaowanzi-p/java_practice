@@ -22,7 +22,6 @@ public class ClientHandler extends ChannelHandlerAdapter {
     private Map<Channel,ServerUrl> revertServerMap;
 
     public ClientHandler() {
-
     }
 
     public ClientHandler(Map<String, CompletableFuture<StubResponse>> requestMap, Map<Channel,ServerUrl> revertServerMap, Map<ServerUrl, Channel> serverMap) {
