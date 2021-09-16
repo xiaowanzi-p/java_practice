@@ -14,7 +14,6 @@ public class DefaultRpcProvider implements RpcProvider{
 
     private NameService nameService;
     private StubFactory stubFactory;
-    private TransportClient transportClient;
 
     @Override
     public <T> T getRemoteService(Class<T> clazz) throws InstantiationException, IllegalAccessException {
@@ -25,6 +24,7 @@ public class DefaultRpcProvider implements RpcProvider{
         T stub = stubFactory.createStub(clazz);
         Stub inter = (Stub) stub;
         inter.setServerUrl(server);
+        TransportClient transportClient = new TransportClient();
         inter.setTransportClient(transportClient);
         return stub;
     }
@@ -37,6 +37,7 @@ public class DefaultRpcProvider implements RpcProvider{
         serverUrl.setName(className);
         serverUrl.setHost("localhost");
         serverUrl.setPort(7629);
+        nameService.register(serverUrl);
         return serverUrl;
     }
 
@@ -44,8 +45,11 @@ public class DefaultRpcProvider implements RpcProvider{
     public void startService() {
         //初始化NameService
         NameService nameService = new DefaultNameService();
+        this.nameService = nameService;
         //初始化StubFactory
         DefaultStubFactory stubFactory = new DefaultStubFactory();
+        this.stubFactory = stubFactory;
+
 
 
     }

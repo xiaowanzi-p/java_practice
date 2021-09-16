@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.java_practice.mongo.model.Product;
 import com.example.java_practice.mongo.repositories.ProductRepo;
 import com.example.java_practice.nio.NioServer;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
@@ -25,6 +27,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/demo")
+@Slf4j
 public class DemoController {
 
     @Autowired
@@ -43,9 +46,15 @@ public class DemoController {
     }
 
     @PostMapping("/test2")
-    public boolean test2() {
-        Page<Product> test = productRepo.findAllByName("test", PageRequest.of(0, 1));
-        return true;
+    public void test2() {
+        try {
+            TestUser testUser = new TestUser();
+            Class<? extends TestUser> clazz = testUser.getClass();
+            Method demoMethod = clazz.getMethod("demoMethod");
+            demoMethod.invoke(testUser,null);
+        } catch (Exception e) {
+            log.error("错误",e);
+        }
     }
 }
 
