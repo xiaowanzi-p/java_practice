@@ -31,21 +31,21 @@
         </dependency>
     </dependencies>
 
-    <!--<build>
+    <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                &lt;!&ndash;<version>3.1.0</version>&ndash;&gt;
+                <!--<version>3.1.0</version>-->
                 <configuration>
                     <archive>
-                        &lt;!&ndash;自动添加META-INF/MANIFEST.MF &ndash;&gt;
+                        <!--自动添加META-INF/MANIFEST.MF -->
                         <manifest>
                             <addClasspath>true</addClasspath>
                         </manifest>
                         <manifestEntries>
-                            <Premain-Class>com.rickiyang.learn.PreMainTraceAgent</Premain-Class>
-                            <Agent-Class>com.rickiyang.learn.PreMainTraceAgent</Agent-Class>
+                            <Premain-Class>com.java.agent.MyAgent</Premain-Class>
+                            <Agent-Class>com.java.agent.MyAgent</Agent-Class>
                             <Can-Redefine-Classes>true</Can-Redefine-Classes>
                             <Can-Retransform-Classes>true</Can-Retransform-Classes>
                         </manifestEntries>
@@ -53,6 +53,6 @@
                 </configuration>
             </plugin>
         </plugins>
-    </build>-->
+    </build>
 
 </project>
