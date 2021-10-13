@@ -5,6 +5,8 @@ import io.netty.buffer.ByteBufAllocator;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.util.Attribute;
+import io.netty.util.AttributeKey;
 import io.netty.util.ReferenceCountUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -53,11 +55,18 @@ public class BusinessHandler extends ChannelHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        AttributeKey<Object> key = AttributeKey.valueOf("selfDisconnect");
+        Attribute<Object> value = ctx.channel().attr(key);
+        value.set("selfDisconnectValue");
         log.info("收到了一个客户端新连接");
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        AttributeKey<Object> key = AttributeKey.valueOf("selfDisconnect");
+        Attribute<Object> value = ctx.channel().attr(key);
+        Object o = value.get();
+        System.out.println("获取的值为: " + o);
         log.info("断开了一个客户端连接");
     }
 
