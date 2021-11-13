@@ -5,6 +5,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>java_agent</module>
+        <module>structure_arithmetic</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
