@@ -5,16 +5,16 @@ import com.alibaba.fastjson.JSONObject;
 public class HeadTest {
 
     public static void main(String[] a) {
-        BigHead<Integer> bigHead = new BigHead<>(10);
-        bigHead.add(2);
-        bigHead.add(1);
-        bigHead.add(4);
-        bigHead.add(8);
-        bigHead.add(7);
-        bigHead.add(3);
-        System.out.println(JSONObject.toJSONString(bigHead.getArray()));
-        Integer remove = bigHead.remove();
+        SmallHead<Integer> smallHead = new SmallHead<>(10);
+        smallHead.add(2);
+        smallHead.add(1);
+        smallHead.add(4);
+        smallHead.add(8);
+        smallHead.add(7);
+        smallHead.add(3);
+        System.out.println(JSONObject.toJSONString(smallHead.getArray()));
+        Integer remove = smallHead.remove();
         System.out.println(remove);
-        System.out.println(JSONObject.toJSONString(bigHead.getArray()));
+        System.out.println(JSONObject.toJSONString(smallHead.getArray()));
     }
 }

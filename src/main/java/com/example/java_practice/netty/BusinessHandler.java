@@ -55,9 +55,9 @@ public class BusinessHandler extends ChannelHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        AttributeKey<Object> key = AttributeKey.valueOf("selfDisconnect");
+        /*AttributeKey<Object> key = AttributeKey.valueOf("selfDisconnect");
         Attribute<Object> value = ctx.channel().attr(key);
-        value.set("selfDisconnectValue");
+        value.set("selfDisconnectValue");*/
         log.info("收到了一个客户端新连接");
     }
 
@@ -66,7 +66,8 @@ public class BusinessHandler extends ChannelHandlerAdapter {
         AttributeKey<Object> key = AttributeKey.valueOf("selfDisconnect");
         Attribute<Object> value = ctx.channel().attr(key);
         Object o = value.get();
-        System.out.println("获取的值为: " + o);
+        boolean b = o == null;
+        System.out.println("获取的值为: " + b);
         log.info("断开了一个客户端连接");
     }
 
