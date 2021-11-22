@@ -2,18 +2,24 @@ package com.example.structure_arithmetic.arithmetic.sort;
 
 import java.util.List;
 
+
 public class MaoPaoSort {
 
-
-    public static <T> void sort(List<Comparable<T>> list) {
+    public static void sort(List list) {
         int size = list.size();
         for (int i=0; i<size; i++) {
-            for (int j=i; j<size-1; j++) {
-                Comparable c1 = list.get(j);
-                Comparable c2 = list.get(j+1);
+            System.out.println("循环了第"+(i+1)+"次");
+            boolean flag = true;
+            for (int j=0; j<size-i-1; j++) {
+                Comparable c1 = (Comparable)list.get(j);
+                Comparable c2 = (Comparable)list.get(j+1);
                 if (c1.compareTo(c2) > 0) {
+                    flag = false;
                     swap(list,j,j+1);
                 }
+            }
+            if (flag) {
+                return;
             }
         }
     }
