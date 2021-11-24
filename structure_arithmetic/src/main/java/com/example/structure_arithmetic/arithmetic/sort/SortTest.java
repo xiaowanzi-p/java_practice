@@ -15,7 +15,7 @@ public class SortTest {
         list.add(1);
         list.add(3);
         list.add(8);
-        MaoPaoSort.sort(list);
+        QuickSort.sort(list);
         System.out.println(JSONObject.toJSONString(list));
     }
 }
