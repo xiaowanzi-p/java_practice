@@ -35,7 +35,7 @@ public class Graph<T> {
        if (!map.containsKey(originNode)) {
            map.put(originNode,Lists.newArrayList());
        }
-        @Before
+
        if (outDegreeData != null) {
           OriginNode<T> outOriginNode = new OriginNode(outDegreeData);
           DegreeNode<T> OutDegreeNode = new DegreeNode<>(outOriginNode, weight);

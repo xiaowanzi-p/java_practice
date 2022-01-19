@@ -17,6 +17,43 @@ public class Demo {
         }*/
         NettyServer.serverStart(8920);
     }
+
+
+    public void test() {
+        //估算价格，处理操作
+        int price = 100;
+        if (price >80 && price <100) {
+
+        } else {
+            if (price <60 && price > 40) {
+
+            }
+            if (price < 40) {
+
+            }
+        }
+    }
+
+
+    public void test01() {
+        int price = 100;
+        String appraisement = appraisement(price);
+        switch (appraisement) {
+            case "CHEAP":
+                break;
+            case "EXPENSIVE":
+                break;
+            case "MIDDLE":
+                break;
+            default:
+        }
+    }
+
+
+    private String appraisement(int pice) {
+        return null;
+    }
+
 }
 
 
