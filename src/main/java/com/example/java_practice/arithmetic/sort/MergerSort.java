@@ -1,6 +1,9 @@
 package com.example.java_practice.arithmetic.sort;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -74,5 +77,67 @@ public class MergerSort {
         }
 
         return data;
+    }
+
+
+    public static void main(String[] a) {
+        int[] array = {8, 2, 4, 1, 6, 2};
+        int[] ints = sort1(array);
+        System.out.println(JSONObject.toJSONString(ints));
+    }
+
+    public static int[] sort1(int[] array) {
+        //递归结束条件
+        int length = array.length;
+        if (array == null || length <=1) {
+            return array;
+        }
+        //分区
+        int mid = length / 2;
+        int[] array1 = Arrays.copyOfRange(array, 0, mid);
+        int[] array2 = Arrays.copyOfRange(array, mid, length);
+        //递归排序
+        int[] sorta1 = sort1(array1);
+        int[] sorta2 = sort1(array2);
+        //合并
+        return merge1(sorta1,sorta2);
+    }
+
+    public static int[] merge1(int[] array1,int[] array2) {
+        int length1 = array1.length;
+        int length2 = array2.length;
+        int[] newArray = new int[length1 + length2];
+
+        int i = 0;
+        int j = 0;
+        int aindex = 0;
+
+        while (!(i >=length1 || j >= length2)) {
+            int d1 = array1[i];
+            int d2 = array2[j];
+            if (d2 < d1) {
+                newArray[aindex] = d2;
+                j++;
+            } else {
+                newArray[aindex] = d1;
+                i++;
+            }
+            aindex++;
+        }
+        //剩余的加入
+        if (i < length1) {
+            for (int a = i; a < length1; a++) {
+                newArray[aindex] = array1[a];
+                aindex++;
+            }
+        }
+        if (j < length2) {
+            for (int a = j; a < length2; a++) {
+                newArray[aindex] = array2[a];
+                aindex++;
+            }
+        }
+
+        return newArray;
     }
 }

@@ -1,5 +1,7 @@
 package com.example.java_practice.arithmetic.sort;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.util.List;
 
 /**
@@ -34,5 +36,22 @@ public class MaoPaoSort {
                 break;
             }
         }
+    }
+
+
+    public static void main(String[] a) {
+        int[] array = {3, 6, 1, 9, 7, 8};
+        int length = array.length;
+        for (int i=0; i<length; i++) {
+            for (int j=0; j<length-1-i; j++) {
+                int d1 = array[j];
+                int d2 = array[j+1];
+                if (d1 > d2) {
+                    array[j+1] = d1;
+                    array[j] = d2;
+                }
+            }
+        }
+        System.out.println(JSONObject.toJSONString(array));
     }
 }

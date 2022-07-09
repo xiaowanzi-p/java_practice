@@ -1,6 +1,9 @@
 package com.example.java_practice.arithmetic.sort;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class QuickSort {
@@ -70,5 +73,67 @@ public class QuickSort {
         list.set(i,povid);
         list.set(list.size()-1,t);
         return i;
+    }
+
+
+    public static void main(String[] a) {
+        int[] array = {1, 5, 2, 4, 8, 6, 9};
+        int[] ints = sort1(array);
+        System.out.println(JSONObject.toJSONString(ints));
+    }
+
+    public static int[] sort1(int[] array) {
+        //递归结束条件
+        int length = array.length;
+        if (array == null || length <=1) {
+            return array;
+        }
+        //分区
+        int mid = partition1(array);
+        int[] array1 = Arrays.copyOfRange(array, 0, mid);
+        int[] array2 = Arrays.copyOfRange(array, mid, length);
+        //递归
+        int[] sortArray1 = sort1(array1);
+        int[] sortArray2 = sort1(array2);
+        //合并
+        int[] newArray = new int[sortArray1.length + sortArray2.length];
+        for (int i=0; i<sortArray1.length; i++) {
+            newArray[i] = sortArray1[i];
+        }
+        for (int i=0; i<sortArray2.length; i++) {
+            newArray[sortArray1.length+i] = sortArray2[i];
+        }
+        return newArray;
+    }
+
+    public static int partition1(int[] array) {
+        //最后一个数据作为分区比较点
+        int length = array.length;
+        int compator = array[length - 1];
+
+        //遍历指针和分区节点指针
+        int bl = 0;
+        int cp = 0;
+
+        while (bl < length-1) {
+            int bd = array[bl];
+            if (bd < compator) {
+                if (bl != cp) {
+                    int cd = array[cp];
+                    array[cp] = bd;
+                    array[bl] = cd;
+                }
+                cp++;
+            }
+            bl++;
+        }
+
+        //替换分区节点
+        if (cp != length-1) {
+            int cd = array[cp];
+            array[length-1] = cd;
+            array[cp] = compator;
+        }
+        return cp;
     }
 }

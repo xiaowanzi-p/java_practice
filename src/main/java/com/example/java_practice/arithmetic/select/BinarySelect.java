@@ -1,5 +1,6 @@
 package com.example.java_practice.arithmetic.select;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class BinarySelect {
@@ -108,6 +109,31 @@ public class BinarySelect {
                 }
             }
             return -1;
+        }
+        return -1;
+    }
+
+
+    public static void main(String[] a) {
+        int[] array = {1,2,3,4,5,6,7};
+        int index = binary1(array, 4);
+        System.out.println(index);
+    }
+
+    public static int binary1(int[] array, int target) {
+        int length = array.length;
+        int low = 0;
+        int hight = length-1;
+
+        while (low <= hight) {
+            int mid = (low+hight)/2 + low;
+            if (array[mid] == target) {
+                return mid;
+            } else if (array[mid] > target) {
+                hight = mid - 1;
+            } else {
+                low = mid + 1;
+            }
         }
         return -1;
     }
