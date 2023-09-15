@@ -3,12 +3,10 @@ package com.example.java_practice.arithmetic.sort;
 import com.alibaba.fastjson.JSONObject;
 import com.example.java_practice.arithmetic.common.CommonUtil;
 
-import java.util.List;
-
 /**
  * 选择排序
  */
-public class SelectSort {
+public class SelectSortV2 {
 
     /**
      * 8, 2, 1, 9, 3, 6, 2, 6, 7, 8,0,13
