@@ -6,6 +6,7 @@ import com.example.java_practice.arithmetic.common.CommonUtil;
 /**
  * 插入排序
  *
+ *
  * @author 君墨笑
  * @date 2023/9/15
  */
