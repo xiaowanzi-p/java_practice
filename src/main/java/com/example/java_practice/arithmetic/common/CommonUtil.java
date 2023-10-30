@@ -11,4 +11,18 @@ public class CommonUtil {
         array[target] = array[source];
         array[source] = temp;
     }
+
+
+    /**
+     * 获取随机数组
+     */
+    public static int[] randomArray(int maxLength, int maxValue) {
+        int length = (int) (Math.random() * maxLength);
+        int[] ints = new int[length];
+        for (int i=0; i<length; i++) {
+            int value = (int) (Math.random() * maxValue);
+            ints[i] = value;
+        }
+        return ints;
+    }
 }
