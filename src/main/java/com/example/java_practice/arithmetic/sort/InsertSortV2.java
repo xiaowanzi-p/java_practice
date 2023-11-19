@@ -13,7 +13,7 @@ import com.example.java_practice.arithmetic.common.CommonUtil;
 public class InsertSortV2 {
 
     /**
-     *
+     * 插入排序
      *
      * @param array
      */
