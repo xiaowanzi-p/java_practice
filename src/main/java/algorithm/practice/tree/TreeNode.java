@@ -11,9 +11,9 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class DoubleTreeNode {
+public class TreeNode {
 
     private int data;
-    private DoubleTreeNode left;
-    private DoubleTreeNode right;
+    private TreeNode left;
+    private TreeNode right;
 }

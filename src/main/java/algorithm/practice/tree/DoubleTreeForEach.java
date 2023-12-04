@@ -9,7 +9,7 @@ package algorithm.practice.tree;
 public class DoubleTreeForEach {
 
     public static void main(String[] a) {
-        DoubleTreeNode root = build();
+        TreeNode root = build();
         pre(root);
         System.out.println("===========");
         middle(root);
@@ -20,7 +20,7 @@ public class DoubleTreeForEach {
     /**
      * 前序：头左右
      */
-    public static void pre(DoubleTreeNode root) {
+    public static void pre(TreeNode root) {
         //递归终止条件
         if (root == null) {
             return;
@@ -34,7 +34,7 @@ public class DoubleTreeForEach {
     /**
      * 中序：左头右
      */
-    public static void middle(DoubleTreeNode root) {
+    public static void middle(TreeNode root) {
         //递归终止条件
         if (root == null) {
             return;
@@ -47,7 +47,7 @@ public class DoubleTreeForEach {
     /**
      * 前序：左右头
      */
-    public static void post(DoubleTreeNode root) {
+    public static void post(TreeNode root) {
         //递归终止条件
         if (root == null) {
             return;
@@ -58,18 +58,18 @@ public class DoubleTreeForEach {
     }
 
 
-    public static DoubleTreeNode build() {
-        DoubleTreeNode root = new DoubleTreeNode();
+    public static TreeNode build() {
+        TreeNode root = new TreeNode();
         root.setData(1);
-        DoubleTreeNode node1 = new DoubleTreeNode();
+        TreeNode node1 = new TreeNode();
         node1.setData(2);
-        DoubleTreeNode node2 = new DoubleTreeNode();
+        TreeNode node2 = new TreeNode();
         node2.setData(3);
-        DoubleTreeNode node3 = new DoubleTreeNode();
+        TreeNode node3 = new TreeNode();
         node3.setData(4);
-        DoubleTreeNode node4 = new DoubleTreeNode();
+        TreeNode node4 = new TreeNode();
         node4.setData(5);
-        DoubleTreeNode node5 = new DoubleTreeNode();
+        TreeNode node5 = new TreeNode();
         node5.setData(6);
         root.setLeft(node1);
         root.setRight(node2);
