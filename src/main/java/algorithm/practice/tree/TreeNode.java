@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 public class TreeNode {
 
-    private int data;
-    private TreeNode left;
-    private TreeNode right;
+    public int data;
+    public TreeNode left;
+    public TreeNode right;
 }
