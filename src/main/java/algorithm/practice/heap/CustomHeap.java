@@ -56,10 +56,19 @@ public class CustomHeap {
         array[currentIndex] = value;
         size++;
         int farther = (currentIndex-1)/2;
-        while (array[currentIndex] > array[farther]) {
-            CommonUtil.swap(array,currentIndex,farther);
-            currentIndex = farther;
-            farther = (currentIndex-1)/2;
+        if (max) {
+            while (array[currentIndex] > array[farther]) {
+                CommonUtil.swap(array,currentIndex,farther);
+                currentIndex = farther;
+                farther = (currentIndex-1)/2;
+            }
+        }
+        if (!max) {
+            while (array[currentIndex] < array[farther]) {
+                CommonUtil.swap(array,currentIndex,farther);
+                currentIndex = farther;
+                farther = (currentIndex-1)/2;
+            }
         }
     }
 
@@ -91,12 +100,23 @@ public class CustomHeap {
                 flag = false;
                 continue;
             }
-            if (array[current] < array[compare]) {
-                CommonUtil.swap(array,compare,current);
-                current = compare;
-            } else {
-                flag = false;
-                continue;
+            if (max) {
+                if (array[current] < array[compare]) {
+                    CommonUtil.swap(array,compare,current);
+                    current = compare;
+                } else {
+                    flag = false;
+                    continue;
+                }
+            }
+            if (!max) {
+                if (array[current] > array[compare]) {
+                    CommonUtil.swap(array,compare,current);
+                    current = compare;
+                } else {
+                    flag = false;
+                    continue;
+                }
             }
         }
     }
@@ -112,6 +132,9 @@ public class CustomHeap {
         if (right > size-1) {
             return left;
         }
-        return array[left] > array[right] ? left : right;
+        if (max) {
+            return array[left] > array[right] ? left : right;
+        }
+        return array[left] > array[right] ? right : left;
     }
 }
