@@ -25,7 +25,7 @@ public class CustomHeap {
     private static Map<Integer,Integer> map = new HashMap<>();
 
     public static void main(String[] a) {
-        build(10);
+        /*build(10);
         add(2);
         add(3);
         add(4);
@@ -45,7 +45,9 @@ public class CustomHeap {
         System.out.println("弹出：" + poll());
         System.out.println("弹出：" + poll());
         System.out.println("弹出：" + poll());
-        System.out.println("弹出：" + poll());
+        System.out.println("弹出：" + poll());*/
+        char cha = '中';
+        System.out.println(cha);
     }
 
     private static void build(int capacity) {
