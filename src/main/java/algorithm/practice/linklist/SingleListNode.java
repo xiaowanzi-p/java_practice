@@ -11,4 +11,12 @@ import lombok.Setter;
 public class SingleListNode {
     private int data;
     private SingleListNode next;
+
+    public SingleListNode() {
+
+    }
+
+    public SingleListNode(int data) {
+        this.data = data;
+    }
 }

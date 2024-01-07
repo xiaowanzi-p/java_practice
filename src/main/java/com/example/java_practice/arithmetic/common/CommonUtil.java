@@ -1,6 +1,8 @@
 package com.example.java_practice.arithmetic.common;
 
 
+import algorithm.practice.linklist.SingleListNode;
+
 public class CommonUtil {
 
     /**
@@ -24,5 +26,16 @@ public class CommonUtil {
             ints[i] = value;
         }
         return ints;
+    }
+
+
+    public static void foreach(SingleListNode head) {
+        SingleListNode current = head;
+        StringBuilder builder = new StringBuilder();
+        while (current != null) {
+            builder.append(current.getData());
+            current = current.getNext();
+        }
+        System.out.println(builder.toString());
     }
 }
