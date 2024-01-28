@@ -14,6 +14,12 @@ public class CommonUtil {
         array[source] = temp;
     }
 
+    public static void swap(char[] array, int source, int target) {
+        char temp = array[target];
+        array[target] = array[source];
+        array[source] = temp;
+    }
+
 
     /**
      * 获取随机数组
